@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\CreateUser;
 use App\Models\PhoneBook;
 use App\Models\User;
 use App\Models\UserCountry;
+use App\Notifications\SMSNotification;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
@@ -66,27 +68,10 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        try {
-            $country = UserCountry::firstOrCreate([
-                'name' => $data['country']['name'],
-                'idd' => $data['country']['idd'],
-            ]);
+        $user = CreateUser::dispatchSync($data);
 
-            $user = User::create([
-                'name' => $data['name'],
-                'email' => $data['email'],
-                'country_id' => $country->id
-            ]);
+        $user->sendAfterRegistrationNotifications();
 
-            PhoneBook::create([
-                'number' => $data['phone'],
-                'user_id' => $user->id,
-                'country_id' => $country->id
-            ]);
-        } catch (\Exception $e) {
-            Log::error($e);
-        }
-
-        return $user ?? collect();
+        return $user;
     }
 }
