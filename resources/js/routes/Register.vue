@@ -1,5 +1,6 @@
 <script>
 import countries from '../countries'
+
 export default {
     name: "Register",
     data: () => ({
@@ -15,7 +16,14 @@ export default {
     }),
     methods: {
         register() {
-
+            axios.post('/register', {
+                name: this.name,
+                country: this.country,
+                phone: this.phone,
+                email: this.email
+            }).then((response) =>{
+                this.$router.push('/home')
+            })
         }
     }
 }
@@ -94,3 +102,6 @@ export default {
     </v-container>
 </template>
 
+<style lang="sass">
+    $select-dense-selections-margin: 5px 4px 3px 5px
+</style>

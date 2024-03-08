@@ -10,6 +10,7 @@ class PhoneBook extends Model
     use HasFactory;
 
     protected $table = 'phone_book';
+    protected $guarded = [];
 
     public function user()
     {

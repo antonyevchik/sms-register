@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('phone_books', function (Blueprint $table) {
+        Schema::create('phone_book', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('user_id');
-            $table->unsignedInteger('country_id');
+            $table->string('number');
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('country_id');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('country_id')->references('id')->on('user_countries');
         });
     }
 

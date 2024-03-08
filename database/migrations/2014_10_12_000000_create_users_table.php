@@ -16,12 +16,10 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->unsignedInteger('country_id');
+            $table->string('password')->nullable();
             $table->rememberToken();
+            $table->unsignedBigInteger('country_id')->nullable()->default(null);
             $table->timestamps();
-
-            $table->foreign('country_id')->references('id')->on('user_countries');
         });
     }
 

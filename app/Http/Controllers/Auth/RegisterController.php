@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\PhoneBook;
 use App\Models\User;
+use App\Models\UserCountry;
 use Illuminate\Foundation\Auth\RegistersUsers;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends Controller
@@ -50,8 +52,9 @@ class RegisterController extends Controller
     {
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
+            'country' => ['required', 'array'],
+            'phone' => ['required', 'string', 'min:8'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
     }
 
@@ -59,14 +62,31 @@ class RegisterController extends Controller
      * Create a new user instance after a valid registration.
      *
      * @param  array  $data
-     * @return \App\Models\User
+     * @return \Illuminate\Support\Collection
      */
     protected function create(array $data)
     {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-        ]);
+        try {
+            $country = UserCountry::firstOrCreate([
+                'name' => $data['country']['name'],
+                'idd' => $data['country']['idd'],
+            ]);
+
+            $user = User::create([
+                'name' => $data['name'],
+                'email' => $data['email'],
+                'country_id' => $country->id
+            ]);
+
+            PhoneBook::create([
+                'number' => $data['phone'],
+                'user_id' => $user->id,
+                'country_id' => $country->id
+            ]);
+        } catch (\Exception $e) {
+            Log::error($e);
+        }
+
+        return $user ?? collect();
     }
 }
