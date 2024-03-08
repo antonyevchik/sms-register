@@ -9,7 +9,7 @@ Vue.use(VueRouter)
 
 const router = new VueRouter({
     mode: 'history',
-    hashbang: false,
+    hashbang: true,
     base: '/',
     routes: routes,
 })

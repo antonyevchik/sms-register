@@ -12,7 +12,12 @@ export default {
             idd: ''
         },
         phone: '',
-        email: ''
+        email: '',
+
+        name_rules: [
+            value => !!value || 'Required.',
+            value => (value && value.length >= 3) || 'Min 3 characters',
+        ],
     }),
     methods: {
         register() {
@@ -47,6 +52,7 @@ export default {
                     v-model="name"
                     label="Full Name"
                     required
+                    :rules="name_rules"
                     background-color="white"
                     dense
                     outlined
