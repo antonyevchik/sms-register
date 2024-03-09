@@ -6,6 +6,7 @@ export default {
     data: () => ({
 
     }),
+
     methods: {
         logout() {
             axios.get('/logout')

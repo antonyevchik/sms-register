@@ -21,14 +21,18 @@ export default {
     }),
     methods: {
         register() {
-            axios.post('/register', {
-                name: this.name,
-                country: this.country,
-                phone: this.phone,
-                email: this.email
-            }).then((response) =>{
-                this.$router.push('/home')
-            })
+            axios.get('/sanctum/csrf-cookie').then(response => {
+                axios.post('/register', {
+                    name: this.name,
+                    country: this.country,
+                    phone: this.phone,
+                    email: this.email
+                }).then((response) => {
+
+                    this.$router.push('/home')
+                    // axios.post('login')
+                })
+            });
         }
     }
 }

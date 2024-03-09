@@ -16,13 +16,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/{any?}', function () {
-    return view('app');
-})->where('any', '[\/\w\.-]*')->name('root');
+
 
 Route::post('/register', [RegisterController::class, 'register']);
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/auth-user', function () {
+   return response()->json(auth()->user());
+})->middleware(['auth']);
+
+Route::get('/{any?}', function () {
+    return view('app');
+})->where('any', '[\/\w\.-]*')->name('root');
