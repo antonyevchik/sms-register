@@ -15,9 +15,21 @@ export default {
         email: '',
 
         name_rules: [
-            value => !!value || 'Required.',
+            value => !!value || 'Full name is required.',
             value => (value && value.length >= 3) || 'Min 3 characters',
         ],
+        country_rules: [
+            value => !!value.name || 'Country is required.',
+        ],
+        phone_rules: [
+            value => !!value || 'Phone is required.',
+            value => (value && value.length >= 5) || 'Min 5 characters',
+        ],
+        email_rules: [
+            value => !!value || 'Email is required.',
+            value => (value && value.length >= 5) || 'Min 5 characters',
+        ]
+
     }),
     methods: {
         register() {
@@ -28,9 +40,7 @@ export default {
                     phone: this.phone,
                     email: this.email
                 }).then((response) => {
-
                     this.$router.push('/home')
-                    // axios.post('login')
                 })
             });
         }
@@ -55,9 +65,9 @@ export default {
                 <v-text-field
                     v-model="name"
                     label="Full Name"
+                    background-color="white"
                     required
                     :rules="name_rules"
-                    background-color="white"
                     dense
                     outlined
                     rounded
@@ -70,8 +80,9 @@ export default {
                     return-object
                     label="Country"
                     :prepend-inner-icon=country.flag
-                    required
                     background-color="white"
+                    required
+                    :rules="country_rules"
                     dense
                     outlined
                     rounded
@@ -82,8 +93,9 @@ export default {
                     label="Phone Number"
                     type="tel"
                     :prefix=country.idd
-                    required
                     background-color="white"
+                    required
+                    :rules="phone_rules"
                     dense
                     outlined
                     rounded
@@ -93,8 +105,9 @@ export default {
                     v-model="email"
                     label="Email"
                     type="email"
-                    required
                     background-color="white"
+                    required
+                    :rules="email_rules"
                     dense
                     outlined
                     rounded
@@ -111,7 +124,3 @@ export default {
         </v-col>
     </v-container>
 </template>
-
-<style lang="sass">
-    $select-dense-selections-margin: 5px 4px 3px 5px
-</style>

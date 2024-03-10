@@ -24,8 +24,8 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 Auth::routes();
 
 Route::get('/auth-user', function () {
-   return response()->json(auth()->user());
-})->middleware(['auth']);
+   return auth()->user();
+});
 
 Route::get('/{any?}', function () {
     return view('app');
