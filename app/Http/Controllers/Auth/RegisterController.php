@@ -70,7 +70,7 @@ class RegisterController extends Controller
     {
         $user = CreateUser::dispatchSync($data);
 
-//        $user->sendAfterRegistrationNotifications();
+        $user->sendAfterRegistrationNotifications();
 
         return $user;
     }

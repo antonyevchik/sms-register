@@ -33,7 +33,9 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-    if (to.name !== 'register' && !store.getters["auth/authUser"]) {
+    const requiresAuth = to.matched.some((record) => record.meta.requiresAuth)
+
+    if (requiresAuth && !store.getters["auth/authUser"]) {
         store.dispatch("auth/getAuthUser").then(() => {
             if (!store.getters["auth/authUser"]) next({ name: 'register' });
             else next();
