@@ -24,9 +24,13 @@ class EmailNotification extends Notification
     /**
      * Get the mail representation of the notification.
      */
-    public function toMail(object $notifiable): string
+    public function toMail(object $notifiable): array
     {
-        return 'Thank you for using our application!';
+        return [
+            'title'   => 'Registration Confirmation Campaign',
+            'subject' => 'Registration Confirmation',
+            'text'    => 'Thank you for using our application!'
+        ];
     }
 
 }

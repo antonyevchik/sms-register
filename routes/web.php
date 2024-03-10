@@ -1,21 +1,11 @@
 <?php
 
+use App\Http\Controllers\AppController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\AuthUserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
-
 
 
 Route::post('/register', [RegisterController::class, 'register']);
@@ -23,10 +13,5 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Auth::routes();
 
-Route::get('/auth-user', function () {
-   return auth()->user();
-});
-
-Route::get('/{any?}', function () {
-    return view('app');
-})->where('any', '[\/\w\.-]*')->name('root');
+Route::get('/users/auth', AuthUserController::class)->name('users.auth');
+Route::get('/{any?}', AppController::class)->where('any', '[\/\w\.-]*')->name('root');
